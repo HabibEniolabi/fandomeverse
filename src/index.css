@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============ Design tokens ============ */
+:root {
+  --bg: 247 244 237;          /* #F7F4ED */
+  --surface: 255 255 255;     /* #FFFFFF */
+  --surface-2: 240 238 232;   /* #F0EEE8 */
+  --elevated: 255 255 255;
+  --ink: 23 23 31;            /* #17171F */
+  --ink-2: 104 104 117;       /* #686875 */
+  --muted: 146 144 154;       /* #92909A */
+  --line: 222 218 209;        /* #DEDAD1 */
+  --brand: 100 84 232;        /* #6454E8 */
+  --brand-hover: 86 70 213;   /* #5646D5 */
+  color-scheme: light;
+}
+
+.dark {
+  --bg: 16 18 27;             /* #10121B */
+  --surface: 24 27 39;        /* #181B27 */
+  --surface-2: 32 35 48;      /* #202330 */
+  --elevated: 39 42 56;       /* #272A38 */
+  --ink: 248 248 250;         /* #F8F8FA */
+  --ink-2: 167 168 179;       /* #A7A8B3 */
+  --muted: 128 130 144;
+  --line: 50 54 68;           /* #323644 */
+  --brand: 120 105 244;       /* #7869F4 */
+  --brand-hover: 140 127 247;
+  color-scheme: dark;
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 { @apply font-display tracking-tight; }
+  ::selection { background: rgb(var(--brand) / 0.2); }
+  :focus-visible {
+    outline: 2px solid rgb(var(--brand));
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  img, svg { display: block; }
+}
+
+@layer components {
+  .container-page { @apply mx-auto w-full max-w-page px-5 sm:px-6 lg:px-8; }
+  .eyebrow { @apply text-[12px] font-semibold uppercase tracking-[0.14em] text-brand; }
+  .card { @apply rounded-2xl border border-line bg-surface; }
+  .card-hover { @apply transition duration-200 ease-out hover:-translate-y-[3px] hover:shadow-lift; }
+  .img-zoom { @apply transition-transform duration-300 ease-out group-hover:scale-[1.03]; }
+  .input {
+    @apply h-12 w-full rounded-xl border border-line bg-surface px-4 text-[15px] text-ink placeholder:text-muted
+           transition focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/15;
+  }
+  .label { @apply mb-1.5 block text-sm font-medium text-ink; }
+  .scrollbar-none { scrollbar-width: none; }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+}
+
+/* Smooth whole-page colour change during theme toggle only */
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition: background-color 250ms ease, border-color 250ms ease, color 250ms ease, fill 250ms ease !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+}
+
+/* ============ Print (Showcase → Save as PDF) ============ */
+@page { size: A4 landscape; margin: 12mm; }
+
+@media print {
+  html, body { background: rgb(var(--bg)) !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .print-hide { display: none !important; }
+  .print-block { break-inside: avoid; page-break-inside: avoid; }
+  .print-page { break-before: page; page-break-before: always; }
+  .print-page:first-of-type { break-before: auto; page-break-before: auto; }
+  .print-full { width: 100% !important; max-width: none !important; margin: 0 !important; padding-left: 0 !important; }
+  .showcase-main { margin-left: 0 !important; }
+  .device-frame { break-inside: avoid; page-break-inside: avoid; box-shadow: none !important; }
+  a { text-decoration: none; }
+}
+
+/* Force light tokens inside a subtree (used by the Showcase light/dark comparison). */
+.light {
+  --bg: 247 244 237; --surface: 255 255 255; --surface-2: 240 238 232; --elevated: 255 255 255;
+  --ink: 23 23 31; --ink-2: 104 104 117; --muted: 146 144 154; --line: 222 218 209;
+  --brand: 100 84 232; --brand-hover: 86 70 213;
+  color-scheme: light;
+}
